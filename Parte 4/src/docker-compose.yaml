@@ -1,0 +1,85 @@
+version: '3'
+services:
+  productpage:
+    container_name: 34-productpage
+    image: 34/productpage
+    build: 
+      context: ./productpage
+    volumes:
+      - productpage-volume:/opt/microservices/
+    ports:
+      - 9080:9080    
+    environment:
+      - ENABLE_RATINGS=true
+      - DETAILS_HOSTNAME=details
+      - RATINGS_HOSTNAME=ratings
+      - REVIEWS_HOSTNAME=reviews
+
+  details:
+    container_name: 34-details
+    image: 34/details
+    build: 
+      context: ./details
+    volumes:
+      - details-volume:/opt/microservices/
+    environment:
+      - ENABLE_EXTERNAL_BOOK_SERVICE=true
+
+
+  reviews-v1:
+    container_name: 34-reviews-v1
+    image: 34/reviews-v1
+    build: 
+      context: ./reviews/reviews-wlpcfg
+      dockerfile: Dockerfile-v1
+    volumes:
+      - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+    environment:
+      - ENABLE_RATINGS=false
+      - SERVICE_VERSION=v1
+      - STAR_COLOR=black
+
+  reviews-v2:
+     container_name: 34-reviews-v2
+     image: 34/reviews-v2
+     build: 
+       context: ./reviews/reviews-wlpcfg
+       dockerfile: Dockerfile-v2
+     volumes:
+       - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+     environment:
+       - ENABLE_RATINGS=true
+       - SERVICE_VERSION=v2
+       - STAR_COLOR=black
+
+  reviews-v3:
+      container_name: 34-reviews-v3
+      image: 34/reviews-v3
+      build: 
+        context: ./reviews/reviews-wlpcfg
+        dockerfile: Dockerfile-v3
+      volumes:
+       - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+      environment:
+       - ENABLE_RATINGS=true
+       - SERVICE_VERSION=v3
+       - STAR_COLOR=red
+
+  
+
+  ratings:
+    container_name: 34-ratings
+    image: 34/ratings
+    build: 
+      context: ./ratings
+    volumes:
+      - ratings-volume:/opt/microservices/
+    environment:
+      - SERVICE_VERSION=v1
+
+
+volumes:
+  productpage-volume:
+  details-volume:
+  reviews-volume:
+  ratings-volume:

@@ -1,0 +1,80 @@
+version: '3' 
+
+services:
+  productpage:
+    container_name: 34-productpage
+    image: 34/productpage
+    build:
+      context: ./productpage
+    volumes:
+      - productpage-volume:/opt/microservices/
+    ports:
+      - 9080:9080
+    environment:
+      - ENABLE_RATINGS=true
+      - DETAILS_HOSTNAME=details
+      - RATINGS_HOSTNAME=ratings
+      - REVIEWS_HOSTNAME=reviews
+
+  details:
+    container_name: 34-details
+    image: 34/details
+    build:
+      context: ./details
+    volumes:
+      - details-volume:/opt/microservices/
+    environment:
+      - ENABLE_EXTERNAL_BOOK_SERVICE=true
+
+  reviews:
+    container_name: 34-reviews-v1
+    image: 34/reviews-v1
+    build:
+      context: ./reviews/reviews-wlpcfg
+    volumes:
+      - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+    environment:
+      - SERVICE_VERSION=v1
+      - ENABLE_RATINGS=false
+      - STAR_COLOR=black
+
+#  reviews:
+#    container_name: 34-reviews-v2
+#    image: 34/reviews-v2
+#    build:
+#      context: ./reviews/reviews-wlpcfg
+#    volumes:
+#      - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+#    environment:
+#      - SERVICE_VERSION=v2
+#      - ENABLE_RATINGS=true
+#      - STAR_COLOR=black
+
+#  reviews:
+#    container_name: 34-reviews-v3
+#    image: 34/reviews-v3
+#    build:
+#      context: ./reviews/reviews-wlpcfg
+#    volumes:
+#      - reviews-volume:/opt/ibm/wlp/usr/servers/defaultServer/
+#    environment:
+#      - SERVICE_VERSION=v3
+#      - ENABLE_RATINGS=true
+#      - STAR_COLOR=darkred
+
+  ratings:
+    container_name: 34-ratings
+    image: 34/ratings
+    build:
+      context: ./ratings
+    volumes:
+      - ratings-volume:/opt/microservices/
+    environment:
+      - SERVICE_VERSION=v1
+
+volumes:
+  productpage-volume:
+  details-volume:
+  reviews-volume:
+  ratings-volume:
+
