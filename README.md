@@ -1,6 +1,6 @@
 # Plataforma de despliegue escalable de la aplicación BookInfo (Docker, Docker Compose y Kubernetes)
 
-Este repositorio recoge el desarrollo completo de una práctica de **despliegue de aplicaciones escalables en la nube**, realizada en colaboración con la **Universidad Politécnica de Madrid (UPM)**.
+Este repositorio recoge el desarrollo completo de un proyecto de **despliegue de aplicaciones escalables en la nube**, realizada en colaboración con la **Universidad Politécnica de Madrid (UPM)**.
 
 El trabajo integra en un único proyecto:
 
